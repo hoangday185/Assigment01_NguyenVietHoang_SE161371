@@ -1,0 +1,26 @@
+﻿@page
+@model Page.Pages.LoginModel
+@{
+	ViewData["Title"] = "login";
+}
+
+<div class="d-flex flex-column align-items-center justify-content-center">
+    <h1 class="mb-2 display-4">Login</h1>
+    <form method="post" class="w-auto bg-opacity-20 bg-white shadow-lg p-5 border-1 rounded-md">
+        <div class="mb-2">
+            <label class="form-label" for="email">Email</label>
+            <input type="text" id="email" name="email" class="form-control"/>
+        </div>
+        <div class="mb-2">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control" />
+        </div>
+        @{
+			if (TempData["error"] != null)
+			{
+				<div class="alert alert-danger">@TempData["error"]</div>
+			}
+        }
+        <button class="btn btn-primary w-100 my-2">Login</button>
+    </form>
+</div>
