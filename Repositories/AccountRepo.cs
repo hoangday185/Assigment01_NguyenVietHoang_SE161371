@@ -4,14 +4,30 @@ namespace Repositories
 {
     public class AccountRepo : IAccountRepo
     {
-        public SystemAccount GetAccount(string email, string password)
+        public void AddAccount(SystemAccount account)
+        => AccountDAO.Instance.AddAccount(account);
+
+        public void DeleteAccount(int id)
         {
-            return AccountDAO.Instance.Login(email, password);
+            AccountDAO.Instance.DeleteAccount(id);
         }
 
+        public SystemAccount FindAccountById(int id)
+        => AccountDAO.Instance.FindAccountById(id);
+
+        public SystemAccount GetAccount(string email, string password)
+            => AccountDAO.Instance.Login(email, password);
+
+
         public List<SystemAccount> GetAccounts()
+            => AccountDAO.Instance.SystemAccounts();
+
+
+        public void UpdateAccount(SystemAccount account)
         {
-            return AccountDAO.Instance.SystemAccounts();
+            AccountDAO.Instance.UpdateAccount(account);
         }
+
+
     }
 }

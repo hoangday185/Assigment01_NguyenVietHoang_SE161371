@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using BO;
-using DAO;
-
+using Repositories;
 namespace Page.Pages.AccountPage
 {
     public class DetailsModel : PageModel
     {
-        private readonly DAO.FunewsManagementContext _context;
+        //create private IAccountRepo
+        private readonly IAccountRepo _accountRepo;
 
-        public DetailsModel(DAO.FunewsManagementContext context)
+        //create constructor with IAccountRepo and remove DAO.FunewsManagementContext context
+        public DetailsModel(IAccountRepo accountRepo)
         {
-            _context = context;
+            _accountRepo = accountRepo;
         }
+
 
         public SystemAccount SystemAccount { get; set; } = default!;
 
@@ -28,7 +25,8 @@ namespace Page.Pages.AccountPage
                 return NotFound();
             }
 
-            var systemaccount = await _context.SystemAccounts.FirstOrDefaultAsync(m => m.AccountId == id);
+            //using method FindAccountById from IAccountRepo
+            var systemaccount = _accountRepo.FindAccountById(id.Value);
             if (systemaccount == null)
             {
                 return NotFound();

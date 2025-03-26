@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using BO;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using BO;
-using DAO;
-
+using Repositories;
 namespace Page.Pages.AccountPage
 {
     public class IndexModel : PageModel
     {
-        private readonly DAO.FunewsManagementContext _context;
+        //create private IAccountRepo 
+        private readonly IAccountRepo _accountRepo;
 
-        public IndexModel(DAO.FunewsManagementContext context)
+        //create constructor with IAccountRepo and remove DAO.FunewsManagementContext context
+
+        public IndexModel(IAccountRepo accountRepo)
         {
-            _context = context;
+            _accountRepo = accountRepo;
         }
 
-        public IList<SystemAccount> SystemAccount { get;set; } = default!;
+        public IList<SystemAccount> SystemAccount { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            SystemAccount = await _context.SystemAccounts.ToListAsync();
+            SystemAccount = _accountRepo.GetAccounts();
         }
     }
 }

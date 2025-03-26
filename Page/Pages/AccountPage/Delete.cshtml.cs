@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using BO;
-using DAO;
-
+using Repositories;
 namespace Page.Pages.AccountPage
 {
     public class DeleteModel : PageModel
     {
-        private readonly DAO.FunewsManagementContext _context;
+        //create private IAccountRepo
+        private readonly IAccountRepo _accountRepo;
 
-        public DeleteModel(DAO.FunewsManagementContext context)
+        //create constructor with IAccountRepo and remove DAO.FunewsManagementContext context
+        public DeleteModel(IAccountRepo accountRepo)
         {
-            _context = context;
+            _accountRepo = accountRepo;
         }
+
 
         [BindProperty]
         public SystemAccount SystemAccount { get; set; } = default!;
@@ -29,8 +26,7 @@ namespace Page.Pages.AccountPage
                 return NotFound();
             }
 
-            var systemaccount = await _context.SystemAccounts.FirstOrDefaultAsync(m => m.AccountId == id);
-
+            var systemaccount = _accountRepo.FindAccountById((short)id);
             if (systemaccount == null)
             {
                 return NotFound();
@@ -49,12 +45,11 @@ namespace Page.Pages.AccountPage
                 return NotFound();
             }
 
-            var systemaccount = await _context.SystemAccounts.FindAsync(id);
+            var systemaccount = _accountRepo.FindAccountById(id.Value);
             if (systemaccount != null)
             {
                 SystemAccount = systemaccount;
-                _context.SystemAccounts.Remove(SystemAccount);
-                await _context.SaveChangesAsync();
+                _accountRepo.DeleteAccount(id.Value);
             }
 
             return RedirectToPage("./Index");

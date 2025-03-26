@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BO;
-using DAO;
-
+using Repositories;
 namespace Page.Pages.AccountPage
 {
     public class EditModel : PageModel
     {
-        private readonly DAO.FunewsManagementContext _context;
+        //create private IAccountRepo
+        private readonly IAccountRepo _accountRepo;
 
-        public EditModel(DAO.FunewsManagementContext context)
+        //create constructor with IAccountRepo and remove DAO.FunewsManagementContext context
+        public EditModel(IAccountRepo accountRepo)
         {
-            _context = context;
+            _accountRepo = accountRepo;
         }
+
 
         [BindProperty]
         public SystemAccount SystemAccount { get; set; } = default!;
@@ -30,7 +27,8 @@ namespace Page.Pages.AccountPage
                 return NotFound();
             }
 
-            var systemaccount =  await _context.SystemAccounts.FirstOrDefaultAsync(m => m.AccountId == id);
+            //using method FindAccountById from IAccountRepo
+            var systemaccount = _accountRepo.FindAccountById(id.Value);
             if (systemaccount == null)
             {
                 return NotFound();
@@ -48,11 +46,12 @@ namespace Page.Pages.AccountPage
                 return Page();
             }
 
-            _context.Attach(SystemAccount).State = EntityState.Modified;
+            //_context.Attach(SystemAccount).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
+                _accountRepo.UpdateAccount(SystemAccount);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -70,8 +69,6 @@ namespace Page.Pages.AccountPage
         }
 
         private bool SystemAccountExists(short id)
-        {
-            return _context.SystemAccounts.Any(e => e.AccountId == id);
-        }
+        => _accountRepo.FindAccountById(id) != null;
     }
 }

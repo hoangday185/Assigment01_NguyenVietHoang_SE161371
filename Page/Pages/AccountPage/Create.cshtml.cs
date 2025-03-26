@@ -1,31 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using BO;
-using DAO;
-
+using Repositories;
 namespace Page.Pages.AccountPage
 {
     public class CreateModel : PageModel
     {
-        private readonly DAO.FunewsManagementContext _context;
+        //create private IAccountRepo
+        private readonly IAccountRepo _accountRepo;
 
-        public CreateModel(DAO.FunewsManagementContext context)
+        //create constructor with IAccountRepo and remove DAO.FunewsManagementContext context
+        public CreateModel(IAccountRepo accountRepo)
         {
-            _context = context;
+            _accountRepo = accountRepo;
         }
+
+        [BindProperty]
+        public int LenghtOfListAccount { get; set; } = default!;
+
 
         public IActionResult OnGet()
         {
+            LenghtOfListAccount = _accountRepo.GetAccounts().Count();
             return Page();
         }
 
         [BindProperty]
         public SystemAccount SystemAccount { get; set; } = default!;
+
+
 
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
@@ -35,8 +38,7 @@ namespace Page.Pages.AccountPage
                 return Page();
             }
 
-            _context.SystemAccounts.Add(SystemAccount);
-            await _context.SaveChangesAsync();
+            _accountRepo.AddAccount(SystemAccount);
 
             return RedirectToPage("./Index");
         }

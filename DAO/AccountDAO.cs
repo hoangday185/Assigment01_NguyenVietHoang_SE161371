@@ -1,4 +1,5 @@
 ﻿using BO;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAO
 {
@@ -43,6 +44,64 @@ namespace DAO
                 return context.SystemAccounts.ToList();
             }
 
+        }
+
+        //add account
+        public void AddAccount(SystemAccount account)
+        {
+            using var context = CreateDb();
+            {
+                //find account by id
+                var existingAccount = FindAccountById(account.AccountId);
+                //check if account exists
+                if (existingAccount == null)
+                {
+                    context.SystemAccounts.Add(account);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+
+        //delete account
+        public void DeleteAccount(int id)
+        {
+            using var context = CreateDb();
+            {
+                //use method find account by id
+                var account = FindAccountById(id);
+                //check if account exists
+                if (account != null)
+                {
+                    context.SystemAccounts.Remove(account);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        //update account
+        public void UpdateAccount(SystemAccount account)
+        {
+            using var context = CreateDb();
+            {
+                //use method find account by id
+                var existingAccount = FindAccountById(account.AccountId);
+                //check if account exists
+                if (existingAccount != null)
+                {
+                    context.SystemAccounts.Update(account);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        //find account by id
+        public SystemAccount FindAccountById(int accountId)
+        {
+            using var context = CreateDb();
+            {
+                return context.SystemAccounts.AsNoTracking().FirstOrDefault(m => m.AccountId == accountId);
+            }
         }
     }
 }
