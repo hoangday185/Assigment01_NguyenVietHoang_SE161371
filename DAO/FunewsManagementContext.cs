@@ -35,6 +35,18 @@ public partial class FunewsManagementContext : DbContext
         return config.GetConnectionString("DefaultConnection")!;
 
     }
+
+    public (string Email, string Password) GetAdminAccount()
+    {
+        IConfiguration config = new ConfigurationBuilder()
+       .SetBasePath(Directory.GetCurrentDirectory())
+       .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+       .Build();
+
+        string email = config["AdminAccount:Email"];
+        string password = config["AdminAccount:Password"];
+        return (email, password);
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
