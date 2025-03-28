@@ -29,6 +29,7 @@ namespace Page.Pages
                 //add email và role vào session
                 HttpContext.Session.SetString("email", email);
                 HttpContext.Session.SetString("role", account.AccountRole.ToString());
+                HttpContext.Session.SetInt32("idUser", account.AccountId);
                 return RedirectToPage("/Article/Index");
             }
             else

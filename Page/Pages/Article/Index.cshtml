@@ -8,7 +8,7 @@
 <h1>Article information</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -49,16 +49,16 @@
     <tbody>
 @foreach (var item in Model.NewsArticle) {
         <tr>
-            <td>
+                <td class="text-truncate" style="max-width:100px">
                 @Html.DisplayFor(modelItem => item.NewsTitle)
             </td>
-            <td>
+                <td class="text-truncate" style="max-width:100px">
                 @Html.DisplayFor(modelItem => item.Headline)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
-            <td>
+                <td class="text-truncate" style="max-width:200px">
                 @Html.DisplayFor(modelItem => item.NewsContent)
             </td>
             <td>
@@ -73,16 +73,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ModifiedDate)
             </td>
-            <td>
+                <td class="text-truncate" style="max-width:200px">
                 @Html.DisplayFor(modelItem => item.Category.CategoryDesciption)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy.AccountId)
             </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.NewsArticleId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.NewsArticleId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.NewsArticleId">Delete</a>
+            <td class="d-flex flex-column">
+                <a asp-page="./Edit" class="btn btn-small btn-success mb-2" asp-route-id="@item.NewsArticleId">Edit</a>
+                    <a asp-page="./Details" class="btn btn-small btn-info mb-2" asp-route-id="@item.NewsArticleId">Details</a>
+                    <a asp-page="./Delete" class="btn btn-small btn-danger" asp-route-id="@item.NewsArticleId">Delete</a>
             </td>
         </tr>
 }

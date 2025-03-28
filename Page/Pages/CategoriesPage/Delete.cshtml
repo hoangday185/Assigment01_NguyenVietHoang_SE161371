@@ -10,6 +10,11 @@
 <h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Category</h4>
+    @{
+        if(TempData["error"]!= null){
+            <p class="alert alert-danger">@TempData["error"]</p>
+        }
+    }
     <hr />
     <dl class="row">
         <dt class="col-sm-2">

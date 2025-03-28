@@ -22,5 +22,6 @@ namespace Repositories
         //interface for find account by id
         public SystemAccount FindAccountById(int id);
 
+
     }
 }

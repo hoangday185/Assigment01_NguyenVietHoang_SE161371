@@ -12,22 +12,34 @@ namespace Page.Pages.Article
         private readonly ICategoryRepo _categoryRepo;
         private readonly IAccountRepo _accountRepo;
         private readonly INewArticleRepo _newArticleRepo;
+        private readonly ITagRepo _tagRepo;
 
 
         public EditModel(
 
             ICategoryRepo categoryRepo,
             IAccountRepo accountRepo,
-            INewArticleRepo newArticleRepo)
+            INewArticleRepo newArticleRepo
+            //add tagRepo
+            , ITagRepo tagRepo
+            )
         {
             //khởi tạo 3 attribute
             _categoryRepo = categoryRepo;
             _accountRepo = accountRepo;
             _newArticleRepo = newArticleRepo;
+            //thêm tagRepo
+            _tagRepo = tagRepo;
         }
 
         [BindProperty]
         public NewsArticle NewsArticle { get; set; } = default!;
+
+        [BindProperty]
+        public List<SelectListItem> Tags { get; set; } = default!;
+
+        [BindProperty]
+        public List<int> SelectedTags { get; set; } = new List<int>();
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -42,9 +54,9 @@ namespace Page.Pages.Article
             {
                 return NotFound();
             }
+            LoadData();
             NewsArticle = newsarticle;
-            ViewData["CategoryId"] = new SelectList(_categoryRepo.GetCategories(), "CategoryId", "CategoryDesciption");
-            ViewData["CreatedById"] = new SelectList(_accountRepo.GetAccounts(), "AccountId", "AccountId");
+
             return Page();
         }
 
@@ -65,9 +77,7 @@ namespace Page.Pages.Article
 
             if (!ModelState.IsValid)
             {
-                ViewData["CategoryId"] = new SelectList(_categoryRepo.GetCategories(), "CategoryId", "CategoryDesciption");
-                ViewData["CreatedById"] = new SelectList(_accountRepo.GetAccounts(), "AccountId", "AccountId");
-
+                LoadData();
                 return Page();
             }
 
@@ -75,7 +85,19 @@ namespace Page.Pages.Article
 
             try
             {
+                NewsArticle.ModifiedDate = DateTime.Now;
+                NewsArticle.UpdatedById = 1;
                 _newArticleRepo.UpdateArticle(NewsArticle);
+                var existingTags = _newArticleRepo.GetArticleTags(NewsArticle.NewsArticleId);
+                var newTags = SelectedTags.Except(existingTags.Select(t => t.TagId)).ToList();
+
+                if (newTags.Any())
+                {
+
+                    _newArticleRepo.UpdateArticleTags(NewsArticle.NewsArticleId, newTags);
+                }
+
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -94,5 +116,16 @@ namespace Page.Pages.Article
 
         private bool NewsArticleExists(string id)
         => _newArticleRepo.FindArticleById(id) == null ? false : true;
+
+        private void LoadData()
+        {
+            ViewData["CategoryId"] = new SelectList(_categoryRepo.GetCategories(), "CategoryId", "CategoryDesciption");
+            ViewData["CreatedById"] = new SelectList(_accountRepo.GetAccounts(), "AccountId", "AccountId");
+            Tags = _tagRepo.Tags().Select(t => new SelectListItem
+            {
+                Value = t.TagId.ToString(),
+                Text = t.TagName
+            }).ToList();
+        }
     }
 }

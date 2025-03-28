@@ -14,5 +14,7 @@ namespace Repositories
 
         public void DeleteCategory(short id);
 
+        public NewsArticle GetNewsArticleByCategoryId(short id);
+
     }
 }

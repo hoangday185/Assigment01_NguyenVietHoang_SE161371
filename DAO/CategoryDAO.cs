@@ -80,5 +80,13 @@ namespace DAO
                 context.SaveChanges();
             }
         }
+
+        public NewsArticle? GetNewsArticleByCategoryId(short id)
+        {
+            using (var context = CreateDbContext())
+            {
+                return context.NewsArticles.AsNoTracking().FirstOrDefault(m => m.CategoryId == id);
+            }
+        }
     }
 }

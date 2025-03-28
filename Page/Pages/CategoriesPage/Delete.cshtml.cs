@@ -51,11 +51,20 @@ namespace Page.Pages.CategoriesPage
 
             //use _categoryRepo.GetCategory((short)id) to get the category
             var category = _categoryRepo.GetCategory((short)id);
-            if (category != null)
+            var isHaveNewsUse = _categoryRepo.GetNewsArticleByCategoryId(id.Value);
+            if (category == null)
             {
-                Category = category;
-                _categoryRepo.DeleteCategory(category.CategoryId);
+                return Page();
             }
+
+            if (isHaveNewsUse != null)
+            {
+                TempData["error"] = "Some news article are using this tag";
+                return Page();
+            }
+            Category = category;
+            _categoryRepo.DeleteCategory(category.CategoryId);
+
 
             return RedirectToPage("./Index");
         }

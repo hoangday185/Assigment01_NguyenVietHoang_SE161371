@@ -1,3 +1,5 @@
+using Assigment01_NguyenVietHoang_SE161371; // This line is causing the error
+using Microsoft.AspNetCore.SignalR;
 using Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +11,7 @@ builder.Services.AddScoped<IAccountRepo, AccountRepo>();
 builder.Services.AddScoped<INewArticleRepo, NewArticleRepo>();
 builder.Services.AddScoped<ITagRepo, TagRepo>();
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
-
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -30,5 +32,12 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.MapHub<SignalR>("/signalR");
+app.MapGet("/test-signalr", async (IHubContext<SignalR> hubContext) =>
+{
+    await hubContext.Clients.All.SendAsync("TestEvent", "Hello from the server!");
+    return Results.Ok("SignalR message sent.");
+});
 
 app.Run();

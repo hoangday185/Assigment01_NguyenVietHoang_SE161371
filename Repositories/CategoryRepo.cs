@@ -21,9 +21,11 @@ namespace Repositories
         }
 
         public Category GetCategory(short id)
-        {
-            return CategoryDAO.Instance.FindCategoryById(id);
-        }
+           => CategoryDAO.Instance.FindCategoryById(id);
+
+
+        public NewsArticle GetNewsArticleByCategoryId(short id)
+        => CategoryDAO.Instance.GetNewsArticleByCategoryId(id);
 
         public void UpdateCategory(Category category)
         {

@@ -15,5 +15,15 @@ namespace Repositories
 
         public void DeleteArticle(string articleId);
 
+
+        //handleTag 
+        public List<Tag> HandleTag(string id, List<int> ahihi);
+
+
+        public void AddTagsToArticle(string articleId, List<int> tagIds);
+
+        public List<Tag> GetArticleTags(string articleId);
+
+        public void UpdateArticleTags(string articleId, List<int> newTagIds);
     }
 }
