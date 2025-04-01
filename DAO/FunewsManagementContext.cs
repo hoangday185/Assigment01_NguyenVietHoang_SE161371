@@ -36,7 +36,7 @@ public partial class FunewsManagementContext : DbContext
 
     }
 
-    public (string Email, string Password) GetAdminAccount()
+    public bool GetAdminAccount(string Iemail, string Ipassword)
     {
         IConfiguration config = new ConfigurationBuilder()
        .SetBasePath(Directory.GetCurrentDirectory())
@@ -45,7 +45,7 @@ public partial class FunewsManagementContext : DbContext
 
         string email = config["AdminAccount:Email"];
         string password = config["AdminAccount:Password"];
-        return (email, password);
+        return email.Equals(Iemail) && password.Equals(Ipassword);
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

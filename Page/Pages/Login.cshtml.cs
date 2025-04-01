@@ -24,19 +24,31 @@ namespace Page.Pages
 
             //kiểm tra xem email và password có đúng không
             var account = _accountRepo.GetAccount(email, password);
-            if (account != null)
-            {
-                //add email và role vào session
-                HttpContext.Session.SetString("email", email);
-                HttpContext.Session.SetString("role", account.AccountRole.ToString());
-                HttpContext.Session.SetInt32("idUser", account.AccountId);
-                return RedirectToPage("/Article/Index");
-            }
-            else
+            Console.WriteLine(account == null);
+            var adAccount = _accountRepo.GetAdminAccount(email, password);
+            if (account == null && !adAccount)
             {
                 //đưa biến lỗi vào tempdata
                 TempData["error"] = "Email or password is incorrect";
                 return RedirectToPage("Login");
+                //add email và role vào session
+
+            }
+            else if (adAccount == true)
+            {
+                //add email và role vào session
+                HttpContext.Session.SetString("email", email);
+                HttpContext.Session.SetString("role", "3");
+                return RedirectToPage("/AccountPage/Index");
+
+            }
+            else
+            {
+                HttpContext.Session.SetString("email", email);
+                HttpContext.Session.SetString("role", account.AccountRole.ToString());
+                HttpContext.Session.SetInt32("idUser", account.AccountId);
+
+                return RedirectToPage("/Article/Index");
             }
         }
     }

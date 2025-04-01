@@ -1,10 +1,10 @@
 ﻿using BO;
 using DAO;
-
 namespace Repositories
 {
     public class TagRepo : ITagRepo
     {
+
         public void CreateTag(Tag tag)
         {
             //use TagDAO to create new tag

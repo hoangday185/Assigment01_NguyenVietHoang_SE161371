@@ -24,10 +24,10 @@ namespace DAO
         private FunewsManagementContext CreateDbContext() => new FunewsManagementContext();
 
         // Get all categories
-        public List<Category> GetAllCategories()
+        public List<Category> GetAllCategories(bool status)
         {
             using var context = CreateDbContext();
-            return context.Categories.ToList();
+            return context.Categories.Where(m => m.IsActive == true).ToList();
         }
 
         // Find category by ID

@@ -3,13 +3,29 @@
 
 @{
     ViewData["Title"] = "Index";
+    var role = HttpContext.Session.GetString("role");
+
+    if (role == null)
+    {
+        Response.Redirect("../Login");
+    }
+
+    // if (("1").Equals(role) || ("2").Equals(role)){
+    //     Response.Redirect("../Login");
+    // }
 }
 
 <h1>Article information</h1>
 
-<p>
-    <a asp-page="Create" class="btn btn-primary">Create New</a>
-</p>
+
+@{
+    if (("1").Equals(role)){
+        <p>
+            <a asp-page="Create" class="btn btn-primary">Create New</a>
+        </p>
+    }
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -79,11 +95,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy.AccountId)
             </td>
-            <td class="d-flex flex-column">
-                <a asp-page="./Edit" class="btn btn-small btn-success mb-2" asp-route-id="@item.NewsArticleId">Edit</a>
-                    <a asp-page="./Details" class="btn btn-small btn-info mb-2" asp-route-id="@item.NewsArticleId">Details</a>
-                    <a asp-page="./Delete" class="btn btn-small btn-danger" asp-route-id="@item.NewsArticleId">Delete</a>
-            </td>
+                @{
+                    if (("1").Equals(role))
+                    {
+                        <td class="d-flex flex-column">
+                            <a asp-page="./Edit" class="btn btn-small btn-success mb-2" asp-route-id="@item.NewsArticleId">Edit</a>
+                            <a asp-page="./Details" class="btn btn-small btn-info mb-2" asp-route-id="@item.NewsArticleId">Details</a>
+                            <a asp-page="./Delete" class="btn btn-small btn-danger" asp-route-id="@item.NewsArticleId">Delete</a>
+                        </td>
+                    }
+                }
+            
         </tr>
 }
     </tbody>

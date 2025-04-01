@@ -3,6 +3,13 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var role = HttpContext.Session.GetString("role");
+    var id = HttpContext.Session.GetInt32("idUser");
+    if (role == null)
+    {
+        Response.Redirect("../Login");
+
+    }
 }
 
 <h1>Edit</h1>
@@ -41,9 +48,13 @@
     </div>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
+@{
+    if(HttpContext.Session.GetString("role").Equals("3")){
+        <div>
+            <a asp-page="./Index">Back to List</a>
+        </div>
+    }
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

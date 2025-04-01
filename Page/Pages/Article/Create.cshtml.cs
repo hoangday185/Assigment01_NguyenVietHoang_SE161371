@@ -91,7 +91,7 @@ namespace Page.Pages.Article
 
         private void LoadData()
         {
-            ViewData["CategoryId"] = new SelectList(_categoryRepo.GetCategories(), "CategoryId", "CategoryDesciption");
+            ViewData["CategoryId"] = new SelectList(_categoryRepo.GetCategories(true), "CategoryId", "CategoryDesciption");
             ViewData["CreatedById"] = new SelectList(_accountRepo.GetAccounts(), "AccountId", "AccountId");
             Tags = _tagRepo.Tags().Select(t => new SelectListItem
             {

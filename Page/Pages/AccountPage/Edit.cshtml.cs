@@ -64,6 +64,10 @@ namespace Page.Pages.AccountPage
                     throw;
                 }
             }
+            if (HttpContext.Session.GetString("role").Equals("1"))
+            {
+                return RedirectToPage("../Article/Index");
+            }
 
             return RedirectToPage("./Index");
         }

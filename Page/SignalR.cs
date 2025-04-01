@@ -27,5 +27,10 @@ namespace Assigment01_NguyenVietHoang_SE161371
             _logger.LogInformation("A client disconnected with connection ID: {ConnectionId}", Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }
+
+        public async Task NotifyTagsUpdated()
+        {
+            await Clients.All.SendAsync("TagsUpdated");
+        }
     }
 }

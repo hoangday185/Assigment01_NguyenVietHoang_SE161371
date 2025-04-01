@@ -3,6 +3,10 @@
 
 @{
     ViewData["Title"] = "Index";
+    var role = HttpContext.Session.GetString("role");
+    // if(role == null || !"3".Equals(role)){
+    //     Response.Redirect("../Login");
+    // }
 }
 
 <h1>Account information</h1>

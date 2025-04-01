@@ -4,7 +4,7 @@ namespace Repositories
     public interface ICategoryRepo
     {
         //interface for list of categories
-        public List<Category> GetCategories();
+        public List<Category> GetCategories(bool status);
 
         public Category GetCategory(short id);
 

@@ -18,7 +18,7 @@ namespace Page.Pages.CategoriesPage
 
         public async Task OnGetAsync()
         {
-            Category = _categoryRepo.GetCategories();
+            Category = _categoryRepo.GetCategories(true);
         }
     }
 }

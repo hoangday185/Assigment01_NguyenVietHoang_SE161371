@@ -54,7 +54,10 @@ namespace DAO
         public NewsArticle FindArticleById(string articleId)
         {
             using var context = CreateDbContext();
-            return context.NewsArticles.AsNoTracking().Include(a => a.Tags).SingleOrDefault(a => a.NewsArticleId.Equals(articleId));
+            {
+                return context.NewsArticles.AsNoTracking().Include(a => a.Tags).SingleOrDefault(a => a.NewsArticleId.Equals(articleId));
+
+            }
         }
 
         // Update article
@@ -72,13 +75,18 @@ namespace DAO
         // Delete article
         public void DeleteArticle(string articleId)
         {
-            using var context = CreateDbContext();
-            var article = FindArticleById(articleId);
-            if (article != null)
+            using (var context = CreateDbContext())
             {
-                context.NewsArticles.Remove(article);
-                context.SaveChanges();
+                var article = FindArticleById(articleId);
+                if (article != null)
+                {
+                    context.Database.ExecuteSqlRaw("DELETE FROM NewsTag WHERE NewsArticleID = {0}", articleId);
+
+                    context.NewsArticles.Remove(article);
+                    context.SaveChanges();
+                }
             }
+
         }
 
         public List<Tag> GetTagsWithArticle(string id, List<int> ahihi)

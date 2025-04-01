@@ -28,6 +28,9 @@ namespace Repositories
             AccountDAO.Instance.UpdateAccount(account);
         }
 
-
+        public bool GetAdminAccount(string Iemail, string Ipassword)
+        {
+            return AccountDAO.Instance.CheckAccountAdmin(Iemail, Ipassword);
+        }
     }
 }

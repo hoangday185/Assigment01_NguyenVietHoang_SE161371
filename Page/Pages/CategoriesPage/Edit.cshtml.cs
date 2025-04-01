@@ -34,7 +34,7 @@ namespace Page.Pages.CategoriesPage
                 return NotFound();
             }
             Category = category;
-            ViewData["ParentCategoryId"] = new SelectList(_categoryRepo.GetCategories(), "CategoryId", "CategoryDesciption");
+            ViewData["ParentCategoryId"] = new SelectList(_categoryRepo.GetCategories(true), "CategoryId", "CategoryDesciption");
             return Page();
         }
 
@@ -44,7 +44,7 @@ namespace Page.Pages.CategoriesPage
         {
             if (!ModelState.IsValid)
             {
-                ViewData["ParentCategoryId"] = new SelectList(_categoryRepo.GetCategories(), "CategoryId", "CategoryDesciption");
+                ViewData["ParentCategoryId"] = new SelectList(_categoryRepo.GetCategories(true), "CategoryId", "CategoryDesciption");
 
                 return Page();
             }

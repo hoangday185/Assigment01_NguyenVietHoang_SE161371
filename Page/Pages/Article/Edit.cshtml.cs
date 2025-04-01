@@ -86,7 +86,7 @@ namespace Page.Pages.Article
             try
             {
                 NewsArticle.ModifiedDate = DateTime.Now;
-                NewsArticle.UpdatedById = 1;
+                NewsArticle.UpdatedById = (short)HttpContext.Session.GetInt32("idUser");
                 _newArticleRepo.UpdateArticle(NewsArticle);
                 var existingTags = _newArticleRepo.GetArticleTags(NewsArticle.NewsArticleId);
                 var newTags = SelectedTags.Except(existingTags.Select(t => t.TagId)).ToList();
@@ -119,7 +119,7 @@ namespace Page.Pages.Article
 
         private void LoadData()
         {
-            ViewData["CategoryId"] = new SelectList(_categoryRepo.GetCategories(), "CategoryId", "CategoryDesciption");
+            ViewData["CategoryId"] = new SelectList(_categoryRepo.GetCategories(true), "CategoryId", "CategoryDesciption");
             ViewData["CreatedById"] = new SelectList(_accountRepo.GetAccounts(), "AccountId", "AccountId");
             Tags = _tagRepo.Tags().Select(t => new SelectListItem
             {

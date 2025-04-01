@@ -85,7 +85,9 @@ namespace DAO
         {
             using (var db = CreateDBContext())
             {
+
                 var result = GetTagById(id);
+                //var newTags = db.NewsArticles.
                 if (result != null)
                 {
                     db.Tags.Remove(result);

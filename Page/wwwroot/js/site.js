@@ -6,60 +6,31 @@ let currentPage = 1;
 const pageSize = 3;
 
 // Define LoadData globally
-function LoadData(page) {
-    const searchActiveIngredients = $("#searchActiveIngredients").val();
-    const searchExpirationDate = $("#searchExpirationDate").val();
-    const searchWarnings = $("#searchWarnings").val();
+function LoadData() {
 
-    $.ajax({
-        url: `/Article/Index`,
-        method: 'GET',
-        success: (result) => {
-            const medicines = result.medicines;
-            const totalPages = result.totalPages;
-            currentPage = result.currentPage;
-
-            // Populate Table
-            let tr = "";
-            $.each(medicines, (index, medicine) => {
-                tr += `<tr>
-                    <td>${medicine.medicineName}</td>
-                    <td>${medicine.activeIngredients}</td>
-                    <td>${medicine.expirationDate}</td>
-                    <td>${medicine.dosageForm}</td>
-                    <td>${medicine.warningsAndPrecautions}</td>
-                    <td>${medicine.manufacturerName}</td>
-                    <td>`;
-
-                if (userRole === "2") {
-                    tr += `
-                        <a href='/MedicineInformationPage/Edit?id=${medicine.medicineId}'>Edit</a>
-                        <a href='/MedicineInformationPage/Delete?id=${medicine.medicineId}'>Delete</a>`;
+     $.ajax({
+                url: window.location.href, // Gửi request đến chính trang này
+                type: "GET",
+                success: function (data) {
+                    let newTags = $(data).find("#tagContainer").html(); // Lấy nội dung mới
+                    if (newTags) {
+                        $("#tagContainer").html(newTags);
+                        console.log("Tag container updated!");
+                    } else {
+                        console.warn("No #tagContainer found in response.");
+                    }
+                },
+                error: function (error) {
+                    console.error("Error reloading tags: ", error);
                 }
-                tr += `</td>
-                </tr>`;
             });
-            $("#tableBody").html(tr);
 
-            // Update Pagination Controls
-            const paginationHtml = `
-                <a class="btn btn-primary mx-2 ${currentPage === 1 ? "disabled" : ""}" onclick="LoadData(${currentPage - 1})">Previous</a>
-                <span class="align-self-center mx-2">Page ${currentPage} of ${totalPages}</span>
-                <a class="btn btn-primary mx-2 ${currentPage === totalPages ? "disabled" : ""}" onclick="LoadData(${currentPage + 1})">Next</a>
-            `;
-            $("#paginationControls").html(paginationHtml);
-        },
-        error: (error) => {
-            console.error("Error loading data:", error);
-        }
-    });
 }
 
 $(() => {
-    LoadData(currentPage);
 
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/signalrServer")
+        .withUrl("/signalR")
         .configureLogging(signalR.LogLevel.Debug)
         .build();
 
@@ -67,7 +38,8 @@ $(() => {
         .then(() => console.log("SignalR connection established."))
         .catch(err => console.error("SignalR connection failed: ", err));
 
-    connection.on("LoadData", function () {
-        console.log(1);
+    connection.on("TagsUpdated", function () {
+        console.log("Tags updated, reloading...");
+        LoadData();
     });
 });

@@ -1,0 +1,33 @@
+﻿@model HandleRole
+@if(Model.Role == "Guest"){
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
+    </li>
+}else if (Model.Role == "3")
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="/AccountPage/Index">Manage Account</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="/Article/Index">List Aritcle</a>
+    </li>
+}
+else if (Model.Role == "1")
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="/Article/Index">Manage Article</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-page="/AccountPage/Edit" asp-route-id="@Model.UserId">Update my profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-page="/CategoriesPage/Index" >Manage category</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-page="/TagPage/Index">Manage tag</a>
+    </li>
+}else if(Model.Role == "2"){
+    @* <li class="nav-item"> *@
+    @*     <a class="nav-link text-dark" asp-area="" asp-page="/Article/Index">Manage Article</a> *@
+    @* </li> *@
+}

@@ -15,9 +15,9 @@ namespace Repositories
             CategoryDAO.Instance.DeleteCategory(id);
         }
 
-        public List<Category> GetCategories()
+        public List<Category> GetCategories(bool status)
         {
-            return CategoryDAO.Instance.GetAllCategories();
+            return CategoryDAO.Instance.GetAllCategories(status);
         }
 
         public Category GetCategory(short id)

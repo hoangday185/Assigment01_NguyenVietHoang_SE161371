@@ -1,4 +1,4 @@
-using Assigment01_NguyenVietHoang_SE161371; // This line is causing the error
+﻿using Assigment01_NguyenVietHoang_SE161371; // This line is causing the error
 using Microsoft.AspNetCore.SignalR;
 using Repositories;
 
@@ -38,6 +38,17 @@ app.MapGet("/test-signalr", async (IHubContext<SignalR> hubContext) =>
 {
     await hubContext.Clients.All.SendAsync("TestEvent", "Hello from the server!");
     return Results.Ok("SignalR message sent.");
+});
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+
+    // Redirect mặc định về trang Login
+    endpoints.MapGet("/", async context =>
+    {
+        context.Response.Redirect("/Login");
+    });
 });
 
 app.Run();

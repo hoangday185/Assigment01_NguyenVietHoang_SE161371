@@ -103,5 +103,14 @@ namespace DAO
                 return context.SystemAccounts.AsNoTracking().FirstOrDefault(m => m.AccountId == accountId);
             }
         }
+
+
+        public bool CheckAccountAdmin(string email, string password)
+        {
+            using var context = CreateDb();
+            {
+                return CreateDb().GetAdminAccount(email, password);
+            }
+        }
     }
 }
