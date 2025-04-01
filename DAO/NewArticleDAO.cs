@@ -77,10 +77,13 @@ namespace DAO
         {
             using (var context = CreateDbContext())
             {
-                var article = FindArticleById(articleId);
+                var article = context.NewsArticles
+        .Include(a => a.Tags)  // Ensure Tags are included
+        .FirstOrDefault(m => m.NewsArticleId.Equals(articleId));
                 if (article != null)
                 {
-                    context.Database.ExecuteSqlRaw("DELETE FROM NewsTag WHERE NewsArticleID = {0}", articleId);
+                    //context.Database.ExecuteSqlRaw("DELETE FROM NewsTag WHERE NewsArticleID = {0}", articleId);
+                    article.Tags.Clear();
 
                     context.NewsArticles.Remove(article);
                     context.SaveChanges();

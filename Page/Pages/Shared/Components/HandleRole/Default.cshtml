@@ -11,7 +11,13 @@
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="" asp-page="/Article/Index">List Aritcle</a>
     </li>
-}
+    <li class="nav-item">
+        <form method="post" asp-page="/AccountPage/Logout" style="display:inline;">
+            <button type="submit" class="btn btn-outline-danger">Logout</button>
+        </form>
+    </li>
+   
+}   
 else if (Model.Role == "1")
 {
     <li class="nav-item">
@@ -26,8 +32,16 @@ else if (Model.Role == "1")
     <li class="nav-item">
         <a class="nav-link text-dark" asp-page="/TagPage/Index">Manage tag</a>
     </li>
+    <li class="nav-item">
+        <form method="post" asp-page="/AccountPage/Logout" style="display:inline;">
+            <button type="submit" class="btn btn-outline-danger">Logout</button>
+        </form>
+    </li>
+   
 }else if(Model.Role == "2"){
-    @* <li class="nav-item"> *@
-    @*     <a class="nav-link text-dark" asp-area="" asp-page="/Article/Index">Manage Article</a> *@
-    @* </li> *@
+    <li class="nav-item">
+        <form method="post" asp-page="/AccountPage/Logout" style="display:inline;">
+            <button type="submit" class="btn btn-outline-danger">Logout</button>
+        </form>
+    </li>
 }

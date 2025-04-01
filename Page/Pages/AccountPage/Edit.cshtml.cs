@@ -33,7 +33,9 @@ namespace Page.Pages.AccountPage
             {
                 return NotFound();
             }
+
             SystemAccount = systemaccount;
+            SystemAccount.AccountRole = systemaccount.AccountRole;
             return Page();
         }
 
@@ -51,6 +53,8 @@ namespace Page.Pages.AccountPage
             try
             {
                 //await _context.SaveChangesAsync();
+                var systemaccount = _accountRepo.FindAccountById(SystemAccount.AccountId);
+                SystemAccount.AccountRole = systemaccount.AccountRole;
                 _accountRepo.UpdateAccount(SystemAccount);
             }
             catch (DbUpdateConcurrencyException)
